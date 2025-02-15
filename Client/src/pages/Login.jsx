@@ -15,6 +15,8 @@ import {
     TabsList,
     TabsTrigger,
 } from "@/components/ui/tabs"
+import { useLoginUserMutation, useRegisterUserMutation } from "@/features/authApi"
+import { Loader2 } from "lucide-react"
 import { useState } from "react"
 
 const Login = () => {
@@ -27,6 +29,8 @@ const Login = () => {
         email: '',
         password: '',
     })
+    const [registerUser,{data : registerData,error : registerError,isLoading : registerIsLoading,isSuccess : registerIsSuccess}] = useRegisterUserMutation()
+    const [loginUser,{data : loginData,error : loginError , isLoading : loginIsLoading,isSuccess : loginIsSuccess}] = useLoginUserMutation()
     const changeInputHandler = (e, type) => {
         const { name, value } = e.target
         if (type === 'signup') {
@@ -36,10 +40,10 @@ const Login = () => {
             setLoginInput({ ...loginInput, [name]: value })
         }
     }
-    const submitHandler = (type) => {
+    const submitHandler = async (type) => {
         const inputData = type === 'signup' ? signupInput : loginInput
-        console.log(inputData);
-        
+        const action = type === 'signup' ? registerUser : loginUser
+        await action(inputData)
     }
     return (
         <div className="flex items-center w-full justify-center p-20">
@@ -86,7 +90,15 @@ const Login = () => {
                             </div>
                         </CardContent>
                         <CardFooter>
-                            <Button onClick={()=>submitHandler('signup')}>Signup</Button>
+                            <Button disabled={registerIsLoading} onClick={()=>submitHandler('signup')}>
+                                {
+                                    registerIsLoading ? (
+                                        <>
+                                        <Loader2 className="mr-2 h-4 w-4 animate-spin"/>Please Wait
+                                        </>
+                                    ) : 'Signup'
+                                }
+                            </Button>
                         </CardFooter>
                     </Card>
                 </TabsContent>
@@ -120,7 +132,15 @@ const Login = () => {
                             </div>
                         </CardContent>
                         <CardFooter>
-                            <Button onClick={submitHandler}>Login</Button>
+                            <Button disabled = {loginIsLoading} onClick={submitHandler}>
+                                {
+                                    loginIsLoading ? (
+                                        <>
+                                        <Loader2 className="mr-2 h-4 w-4 animate-spin"/>Please Wait
+                                        </>
+                                    ) : 'Login'
+                                }
+                            </Button>
                         </CardFooter>
                     </Card>
                 </TabsContent>
