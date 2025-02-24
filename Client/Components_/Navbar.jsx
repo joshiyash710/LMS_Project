@@ -1,5 +1,8 @@
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import Darkmode from '@/Darkmode'
+
 import { School } from 'lucide-react'
 import React from 'react'
 
@@ -12,30 +15,35 @@ const Navbar = () => {
           <School size={'30'} />
           <h1 className='hidden md:block font-extrabold text-2xl'>Edu-Hub</h1>
         </div>
-        <div>
+        <div className='flex items-center gap-8'>
           {
             user ? (
               <DropdownMenu>
-                <DropdownMenuTrigger>
-                  <Button variant='outline'>Open</Button>
+                <DropdownMenuTrigger asChild>
+                  <Avatar>
+                    <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                    <AvatarFallback>CN</AvatarFallback>
+                  </Avatar>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                   <DropdownMenuLabel>My Account</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem>Profile</DropdownMenuItem>
-                  <DropdownMenuItem>Billing</DropdownMenuItem>
-                  <DropdownMenuItem>Team</DropdownMenuItem>
+                  <DropdownMenuItem>My Learning</DropdownMenuItem>
+                  <DropdownMenuItem>Edit Profile</DropdownMenuItem>
                   <DropdownMenuItem>Subscription</DropdownMenuItem>
+                  <DropdownMenuItem>Log Out</DropdownMenuItem>
+                  <DropdownMenuItem>Dashboard</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
 
             ) : (
-              <div>
-                <Button>Login</Button>
+              <div className='flex items-center gap-2'>
+                <Button variant='outline'>Login</Button>
                 <Button>Signup</Button>
               </div>
             )
           }
+          <Darkmode/>
         </div>
       </div>
     </div>
